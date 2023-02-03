@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +97,6 @@ public class ImageService {
 
     private boolean checkFileExtension(String fileExtension) {
         List<String> extensions = new ArrayList<>(List.of("png", "jpg", "jpeg"));
-        return extensions.contains(fileExtension);
+        return extensions.contains(fileExtension.toLowerCase(Locale.ROOT));
     }
 }
