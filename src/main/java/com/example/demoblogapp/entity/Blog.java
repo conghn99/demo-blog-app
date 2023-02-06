@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,8 +63,8 @@ public class Blog {
     private Set<Category> categories = new LinkedHashSet<>();
 
     @JsonBackReference
-    @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
@@ -82,6 +83,13 @@ public class Blog {
             publishedAt = LocalDateTime.now();
         } else {
             publishedAt = null;
+        }
+    }
+
+    @PreRemove
+    private void preRemove() {
+        for (Comment comment : comments) {
+            comment.setBlog(null);
         }
     }
 }
