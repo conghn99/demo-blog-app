@@ -7,6 +7,7 @@ import com.example.demoblogapp.exception.BadRequestException;
 import com.example.demoblogapp.exception.NotFoundException;
 import com.example.demoblogapp.repository.ImageRepository;
 import com.example.demoblogapp.repository.UserRepository;
+import com.example.demoblogapp.response.ImageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +40,7 @@ public class ImageService {
         return image.getData();
     }
 
-    public String uploadImage(MultipartFile file) {
+    public ImageResponse uploadImage(MultipartFile file) {
         // TODO: sau nay user chinh la user dang dang nhap
         Integer userId = 1;
 
@@ -56,7 +57,8 @@ public class ImageService {
                     .user(user)
                     .build();
             imageRepository.save(image);
-            return "/api/images/" + image.getId();
+            String url = "/api/images/" + image.getId();
+            return new ImageResponse(url);
         } catch (Exception e) {
             throw new RuntimeException("Upload Image Error");
         }
