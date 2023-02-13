@@ -9,37 +9,56 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/blogs")
 public class BlogController {
     @Autowired
     private BlogService blogService;
 
     // Xem danh sach blog
-    @GetMapping("")
+    @GetMapping("/api/admin/blogs")
     public ResponseEntity<?> getAllBlogs() {
         return ResponseEntity.ok(blogService.getAllBlog()); //200
     }
 
+    @GetMapping("/api/blogs")
+    public ResponseEntity<?> getAllBlogsByPublicStatus() {
+        return ResponseEntity.ok(blogService.getAllBLogByPublicStatus());
+    }
+
+    @GetMapping("/api/blogs/{id}")
+    public ResponseEntity<?> getBlogByIdByPublicStatus(@PathVariable Integer id) {
+        return ResponseEntity.ok(blogService.getBLogByStatusPublicStatus(id));
+    }
+
+    @GetMapping("/api/blogs/search")
+    public ResponseEntity<?> getBlogByKeyword(@RequestParam("keyword") String keyword) {
+        return ResponseEntity.ok(blogService.getAllBlogByKeyword(keyword));
+    }
+
+    @GetMapping("/api/categories/{categoryId}")
+    public ResponseEntity<?> getBlogsByPublicWithCategory(@PathVariable Integer categoryId) {
+        return ResponseEntity.ok(blogService.getBlogByPublicWithCategory(categoryId));
+    }
+
     // Tao blog
-    @PostMapping("")
+    @PostMapping("/api/admin/blogs")
     public ResponseEntity<?> createBlog(@RequestBody UpsertBlogRequest request) {
         return new ResponseEntity<>(blogService.createBlog(request), HttpStatus.CREATED); //201
     }
 
     // Xem chi tiet blog
-    @GetMapping("{id}")
+    @GetMapping("/api/admin/blogs/{id}")
     public ResponseEntity<?> getBlogById(@PathVariable Integer id) {
         return ResponseEntity.ok(blogService.getBlogById(id)); //200
     }
 
     // Cap nhat blog
-    @PutMapping("{id}")
+    @PutMapping("/api/admin/blogs/{id}")
     public ResponseEntity<?> updateBlog(@PathVariable Integer id, @RequestBody UpsertBlogRequest request) {
         return ResponseEntity.ok(blogService.updateBlog(id, request)); //200
     }
 
     // Xoa blog
-    @DeleteMapping("{id}")
+    @DeleteMapping("/api/admin/blogs/{id}")
     public ResponseEntity<?> deleteBlog(@PathVariable Integer id) {
         blogService.deleteBlog(id);
         return ResponseEntity.noContent().build(); //204

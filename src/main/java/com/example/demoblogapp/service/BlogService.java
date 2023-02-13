@@ -36,7 +36,7 @@ public class BlogService {
         Set<Category> categories = categoryRepository.findByIdIn(request.getCategoryId());
 
         // TODO: sau nay user chinh la user dang dang nhap
-        Integer userId = 1;
+        Integer userId = 3;
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("Not found user with id = " + userId);
         });
@@ -89,5 +89,21 @@ public class BlogService {
             throw new NotFoundException("Not found blog with id = " + id);
         });
         blogRepository.delete(blog);
+    }
+
+    public List<Blog> getAllBLogByPublicStatus() {
+        return blogRepository.findBlogsByStatusOrderByPublishedAtDesc(true);
+    }
+
+    public Blog getBLogByStatusPublicStatus(Integer id) {
+        return blogRepository.findBlogByIdAndStatus(id, true);
+    }
+
+    public List<Blog> getBlogByPublicWithCategory(Integer categoryId) {
+        return blogRepository.findBlogsByCategoryId(categoryId, true);
+    }
+
+    public List<Blog> getAllBlogByKeyword(String keyword) {
+        return blogRepository.findBlogsContainingKeyword(keyword);
     }
 }

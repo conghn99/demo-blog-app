@@ -42,7 +42,7 @@ public class ImageService {
 
     public ImageResponse uploadImage(MultipartFile file) {
         // TODO: sau nay user chinh la user dang dang nhap
-        Integer userId = 1;
+        Integer userId = 3;
 
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("Not found user with id = " + userId);
