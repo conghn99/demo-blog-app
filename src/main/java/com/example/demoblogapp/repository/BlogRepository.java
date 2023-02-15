@@ -12,8 +12,7 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
 
     Blog findBlogByIdAndStatus(Integer id, boolean status);
 
-    @Query("SELECT b FROM Blog b WHERE b.title LIKE %:keyword% OR b.content LIKE %:keyword%")
-    List<Blog> findBlogsContainingKeyword(@Param("keyword") String keyword);
+    List<Blog> findByTitleContainsIgnoreCaseAndStatusOrderByPublishedAtDesc(String title, Boolean status);
 
     @Query("SELECT b FROM Blog b JOIN b.categories c WHERE c.id = ?1 and b.status = ?2 group by b.id order by b.publishedAt desc")
     List<Blog> findBlogsByCategoryId(Integer id, boolean status);
