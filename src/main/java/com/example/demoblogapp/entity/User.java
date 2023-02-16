@@ -43,16 +43,4 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
-    @PreRemove
-    private void preRemove() {
-        for (Blog blog : blogs) {
-            blog.setUser(null);
-        }
-        for (Comment comment :comments) {
-            comment.setUser(null);
-        }
-        for (Image image : images) {
-            image.setUser(null);
-        }
-    }
 }
