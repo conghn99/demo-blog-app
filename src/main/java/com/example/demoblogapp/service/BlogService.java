@@ -104,6 +104,6 @@ public class BlogService {
     }
 
     public List<Blog> getAllBlogByKeyword(String keyword) {
-        return blogRepository.findBlogsContainingKeyword(keyword);
+        return blogRepository.findByTitleContainsIgnoreCaseAndStatusOrderByPublishedAtDesc(keyword, true);
     }
 }
