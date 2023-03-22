@@ -56,7 +56,7 @@ public class Blog {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "blog_category",
             joinColumns = @JoinColumn(name = "blog_id"),
             inverseJoinColumns = @JoinColumn(name = "categories_id"))

@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BlogRepository extends JpaRepository<Blog, Integer> {
     List<Blog> findBlogsByStatusOrderByPublishedAtDesc(boolean status);
 
-    Blog findBlogByIdAndStatus(Integer id, boolean status);
+    Optional<Blog> findBlogByIdAndStatus(Integer id, boolean status);
 
     List<Blog> findByTitleContainsIgnoreCaseAndStatusOrderByPublishedAtDesc(String title, Boolean status);
 

@@ -19,22 +19,22 @@ public class BlogController {
         return ResponseEntity.ok(blogService.getAllBlog()); //200
     }
 
-    @GetMapping("/api/blogs")
+    @GetMapping("/api/public/blogs")
     public ResponseEntity<?> getAllBlogsByPublicStatus() {
         return ResponseEntity.ok(blogService.getAllBLogByPublicStatus());
     }
 
-    @GetMapping("/api/blogs/{id}")
+    @GetMapping("/api/public/blogs/{id}")
     public ResponseEntity<?> getBlogByIdByPublicStatus(@PathVariable Integer id) {
         return ResponseEntity.ok(blogService.getBLogByStatusPublicStatus(id));
     }
 
-    @GetMapping("/api/blogs/search")
+    @GetMapping("/api/public/blogs/search")
     public ResponseEntity<?> getBlogByKeyword(@RequestParam("keyword") String keyword) {
         return ResponseEntity.ok(blogService.getAllBlogByKeyword(keyword));
     }
 
-    @GetMapping("/api/categories/{categoryId}")
+    @GetMapping("/api/public/categories/{categoryId}")
     public ResponseEntity<?> getBlogsByPublicWithCategory(@PathVariable Integer categoryId) {
         return ResponseEntity.ok(blogService.getBlogByPublicWithCategory(categoryId));
     }

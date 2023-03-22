@@ -10,6 +10,7 @@ import com.example.demoblogapp.repository.UserRepository;
 import com.example.demoblogapp.request.UpsertBlogRequest;
 import com.github.slugify.Slugify;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,10 +36,10 @@ public class BlogService {
         // tim kiem category
         Set<Category> categories = categoryRepository.findByIdIn(request.getCategoryId());
 
-        // TODO: sau nay user chinh la user dang dang nhap
-        Integer userId = 3;
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            throw new NotFoundException("Not found user with id = " + userId);
+        //  user chinh la user dang dang nhap
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with email = " + email);
         });
 
         // tao blog
@@ -96,7 +97,9 @@ public class BlogService {
     }
 
     public Blog getBLogByStatusPublicStatus(Integer id) {
-        return blogRepository.findBlogByIdAndStatus(id, true);
+        return blogRepository.findBlogByIdAndStatus(id, true).orElseThrow(() -> {
+            throw new NotFoundException("Not found blog with id = " + id);
+        });
     }
 
     public List<Blog> getBlogByPublicWithCategory(Integer categoryId) {

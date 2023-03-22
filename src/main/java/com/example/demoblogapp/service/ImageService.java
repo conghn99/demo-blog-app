@@ -9,6 +9,7 @@ import com.example.demoblogapp.repository.ImageRepository;
 import com.example.demoblogapp.repository.UserRepository;
 import com.example.demoblogapp.response.ImageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +24,13 @@ public class ImageService {
     private final UserRepository userRepository;
 
     public List<String> getAllImage() {
-        // TODO: sau nay user chinh la user dang dang nhap
-        Integer userId = 1;
+        // user chinh la user dang dang nhap
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with email = " + email);
+        });
 
-        List<Image> images = imageRepository.findByUser_IdOrderByCreated_atDesc(userId);
+        List<Image> images = imageRepository.findByUserNameOrderByCreated_atDesc(email);
         return images.stream()
                 .map(image -> "/api/images/" + image.getId())
                 .toList();
@@ -41,11 +45,10 @@ public class ImageService {
     }
 
     public ImageResponse uploadImage(MultipartFile file) {
-        // TODO: sau nay user chinh la user dang dang nhap
-        Integer userId = 3;
-
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            throw new NotFoundException("Not found user with id = " + userId);
+        // user chinh la user dang dang nhap
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with email = " + email);
         });
 
         // validate file

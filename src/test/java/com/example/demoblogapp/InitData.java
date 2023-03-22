@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.LinkedHashSet;
@@ -21,8 +23,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@DataJpaTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest
 public class InitData {
     @Autowired
     private Faker faker;
@@ -42,15 +45,22 @@ public class InitData {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     @Rollback(value = false)
     void save_user() {
+        Random rd = new Random();
+
         for (int i = 0; i < 5; i++) {
             User user = User.builder()
                     .name(faker.name().fullName())
                     .email(faker.internet().emailAddress())
-                    .password("111")
+                    .password(passwordEncoder.encode("111"))
+                    .role(rd.nextInt(2) == 1 ? "ADMIN" : "USER")
                     .build();
+
             userRepository.save(user);
         }
     }
@@ -62,6 +72,7 @@ public class InitData {
             Category category = Category.builder()
                     .name(faker.leagueOfLegends().champion())
                     .build();
+
             categoryRepository.save(category);
         }
     }

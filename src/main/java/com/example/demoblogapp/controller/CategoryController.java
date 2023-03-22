@@ -13,7 +13,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/api/admin/categories")
+    @GetMapping("/api/public/categories")
     public ResponseEntity<?> getCategoryList() {
         return ResponseEntity.ok(categoryService.getCategoryList());
     }
@@ -23,7 +23,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategories());
     }
 
-    @GetMapping("/api/categories/top5")
+    @GetMapping("/api/public/categories/top5")
     public ResponseEntity<?> getTopFiveCategories() {
         return ResponseEntity.ok(categoryService.getTopFiveCategories());
     }
