@@ -86,11 +86,11 @@ public class Blog {
         }
     }
 
-    @PreRemove
-    private void preRemove() {
-        for (Comment comment : comments) {
-            comment.setBlog(null);
-        }
-    }
+//    @PreRemove
+//    private void preRemove() {
+//        for (Comment comment : comments) {
+//            comment.setBlog(null);
+//        }
+//    }
 }
 
